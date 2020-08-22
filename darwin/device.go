@@ -404,10 +404,28 @@ func (d *Device) HandleXpcEvent(event xpc.Dict, err error) {
 
 	switch m.id() {
 	case // Device event
+		evtStateChanged4,
 		evtStateChanged,
 		evtAdvertisingStarted,
 		evtAdvertisingStopped,
 		evtServiceAdded:
+		ags := msg(event).args()
+		var utsname xpc.Utsname
+		if err := xpc.Uname(&utsname); err != nil {
+			log.Printf("error: %v", err)
+			return
+		}
+		fmt.Printf("utsname:%v\n", utsname)
+
+		if m.id() == evtStateChanged && utsname.Release >= "19." {
+			if _, ok := ags["kCBMsgArgState"]; !ok {
+				// this is not a state change event
+				//
+				// event: 6 xpc.Dict{"kCBMsgArgConnectableState":1, "kCBMsgArgDiscoverableState":1}
+				// event: 6 xpc.Dict{"kCBMsgArgInquiryState":1}
+				return
+			}
+		}
 		d.rspc <- args
 
 	case evtPeripheralDiscovered:

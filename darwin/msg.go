@@ -55,11 +55,17 @@ func (m msg) characteristicProperties() int {
 func (m msg) characteristicValueHandle() int {
 	return xpc.Dict(m).MustGetInt("kCBMsgArgCharacteristicValueHandle")
 }
-func (m msg) descriptors() xpc.Array  { return xpc.Dict(m).MustGetArray("kCBMsgArgDescriptors") }
-func (m msg) descriptorHandle() int   { return xpc.Dict(m).MustGetInt("kCBMsgArgDescriptorHandle") }
-func (m msg) connectionInterval() int { return xpc.Dict(m).MustGetInt("kCBMsgArgConnectionInterval") }
-func (m msg) connectionLatency() int  { return xpc.Dict(m).MustGetInt("kCBMsgArgConnectionLatency") }
-func (m msg) supervisionTimeout() int { return xpc.Dict(m).MustGetInt("kCBMsgArgSupervisionTimeout") }
+func (m msg) descriptors() xpc.Array { return xpc.Dict(m).MustGetArray("kCBMsgArgDescriptors") }
+func (m msg) descriptorHandle() int  { return xpc.Dict(m).MustGetInt("kCBMsgArgDescriptorHandle") }
+func (m msg) connectionInterval() int {
+	return 0 /*return xpc.Dict(m).MustGetInt("kCBMsgArgConnectionInterval")*/
+}
+func (m msg) connectionLatency() int {
+	return 0 /*return xpc.Dict(m).MustGetInt("kCBMsgArgConnectionLatency")*/
+}
+func (m msg) supervisionTimeout() int {
+	return 0 /*return xpc.Dict(m).MustGetInt("kCBMsgArgSupervisionTimeout")*/
+}
 
 func (m msg) err() error {
 	if code := m.result(); code != 0 {

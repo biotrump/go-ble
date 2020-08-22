@@ -53,6 +53,7 @@ var (
 	evtDescriptorWritten,
 	evtSlaveConnectionComplete,
 	evtMasterConnectionComplete int
+	evtStateChanged4 = 4
 )
 
 var serviceID string
@@ -65,8 +66,210 @@ func initXpcIDs() error {
 	}
 
 	cmdInit = 1
+	//refer to goble::xpc.go
+	//%uname -a
+	//Darwin ThomasTsaiMac.local 19.6.0 Darwin Kernel Version 19.6.0: Sun Jul  5 00:43:10 PDT 2020; root:xnu-6153.141.1~9/RELEASE_X86_64 x86_64
+	if utsname.Release >= "19.4" {
+		// high sierra
+		cmdSendData = 21
+		cmdSubscribed = 22
+		cmdAdvertiseStart = 16
+		cmdAdvertiseStop = 17
+		cmdServicesAdd = 18
+		cmdServicesRemove = 19
+		cmdScanningStart = 53
+		cmdScanningStop = 45
+		cmdConnect = 46
+		cmdDisconnect = 47
+		cmdReadRSSI = 61
+		cmdDiscoverServices = 62
+		cmdDiscoverIncludedServices = 74
+		cmdDiscoverCharacteristics = 75
+		cmdReadCharacteristic = 78
+		cmdWriteCharacteristic = 79
+		cmdSubscribeCharacteristic = 81
+		cmdDiscoverDescriptors = 82
+		cmdReadDescriptor = 88
+		cmdWriteDescriptor = 89
 
-	if utsname.Release < "17." {
+		evtStateChanged = 6
+		evtPeripheralDiscovered = 48
+		evtPeripheralConnected = 49
+		evtPeripheralDisconnected = 50
+		evtRSSIRead = 71
+		evtServiceDiscovered = 72
+		evtCharacteristicsDiscovered = 77
+		evtCharacteristicRead = 83
+		evtCharacteristicWritten = 84
+		evtNotificationValueSet = 86
+		evtDescriptorsDiscovered = 87
+		evtDescriptorRead = 90
+		evtDescriptorWritten = 91
+		evtAdvertisingStarted = 27
+		evtAdvertisingStopped = 28
+		evtServiceAdded = 29
+		evtReadRequest = 30
+		evtWriteRequest = 31
+		evtSubscribe = 32
+		evtUnsubscribe = 33
+		evtConfirmation = 34
+		evtATTMTU = 57
+		evtSlaveConnectionComplete = 60  // should be called params update
+		evtMasterConnectionComplete = 59 //not confident
+		evtIncludedServicesDiscovered = 76
+
+		serviceID = "com.apple.blued"
+	} else if utsname.Release >= "19." {
+		// high sierra
+		cmdSendData = 21
+		cmdSubscribed = 22
+		cmdAdvertiseStart = 16
+		cmdAdvertiseStop = 17
+		cmdServicesAdd = 18
+		cmdServicesRemove = 19
+		cmdScanningStart = 51
+		cmdScanningStop = 45
+		cmdConnect = 46
+		cmdDisconnect = 47
+		cmdReadRSSI = 61
+		cmdDiscoverServices = 62
+		cmdDiscoverIncludedServices = 74
+		cmdDiscoverCharacteristics = 75
+		cmdReadCharacteristic = 78
+		cmdWriteCharacteristic = 79
+		cmdSubscribeCharacteristic = 81
+		cmdDiscoverDescriptors = 82
+		cmdReadDescriptor = 88
+		cmdWriteDescriptor = 89
+
+		evtStateChanged = 6
+		evtPeripheralDiscovered = 48
+		evtPeripheralConnected = 49
+		evtPeripheralDisconnected = 50
+		evtRSSIRead = 71
+		evtServiceDiscovered = 72
+		evtCharacteristicsDiscovered = 77
+		evtCharacteristicRead = 83
+		evtCharacteristicWritten = 84
+		evtNotificationValueSet = 86
+		evtDescriptorsDiscovered = 87
+		evtDescriptorRead = 90
+		evtDescriptorWritten = 91
+		evtAdvertisingStarted = 27
+		evtAdvertisingStopped = 28
+		evtServiceAdded = 29
+		evtReadRequest = 30
+		evtWriteRequest = 31
+		evtSubscribe = 32
+		evtUnsubscribe = 33
+		evtConfirmation = 34
+		evtATTMTU = 57
+		evtSlaveConnectionComplete = 60  // should be called params update
+		evtMasterConnectionComplete = 59 //not confident
+		evtIncludedServicesDiscovered = 76
+
+		serviceID = "com.apple.blued"
+	} else if utsname.Release >= "18." {
+		// high sierra
+		cmdSendData = 21
+		cmdSubscribed = 22
+		cmdAdvertiseStart = 16
+		cmdAdvertiseStop = 17
+		cmdServicesAdd = 18
+		cmdServicesRemove = 19
+		cmdScanningStart = 46
+		cmdScanningStop = 45
+		cmdConnect = 46
+		cmdDisconnect = 47
+		cmdReadRSSI = 61
+		cmdDiscoverServices = 62
+		cmdDiscoverIncludedServices = 74
+		cmdDiscoverCharacteristics = 75
+		cmdReadCharacteristic = 78
+		cmdWriteCharacteristic = 79
+		cmdSubscribeCharacteristic = 81
+		cmdDiscoverDescriptors = 82
+		cmdReadDescriptor = 88
+		cmdWriteDescriptor = 89
+
+		evtStateChanged = 6
+		evtPeripheralDiscovered = 48
+		evtPeripheralConnected = 49
+		evtPeripheralDisconnected = 50
+		evtRSSIRead = 71
+		evtServiceDiscovered = 72
+		evtCharacteristicsDiscovered = 77
+		evtCharacteristicRead = 83
+		evtCharacteristicWritten = 84
+		evtNotificationValueSet = 86
+		evtDescriptorsDiscovered = 87
+		evtDescriptorRead = 90
+		evtDescriptorWritten = 91
+		evtAdvertisingStarted = 27
+		evtAdvertisingStopped = 28
+		evtServiceAdded = 29
+		evtReadRequest = 30
+		evtWriteRequest = 31
+		evtSubscribe = 32
+		evtUnsubscribe = 33
+		evtConfirmation = 34
+		evtATTMTU = 57
+		evtSlaveConnectionComplete = 60  // should be called params update
+		evtMasterConnectionComplete = 59 //not confident
+		evtIncludedServicesDiscovered = 76
+
+		serviceID = "com.apple.blued"
+	} else if utsname.Release >= "17." {
+		// high sierra
+		cmdSendData = 21
+		cmdSubscribed = 22
+		cmdAdvertiseStart = 16
+		cmdAdvertiseStop = 17
+		cmdServicesAdd = 18
+		cmdServicesRemove = 19
+		cmdScanningStart = 44
+		cmdScanningStop = 45
+		cmdConnect = 46
+		cmdDisconnect = 47
+		cmdReadRSSI = 61
+		cmdDiscoverServices = 62
+		cmdDiscoverIncludedServices = 74
+		cmdDiscoverCharacteristics = 75
+		cmdReadCharacteristic = 78
+		cmdWriteCharacteristic = 79
+		cmdSubscribeCharacteristic = 81
+		cmdDiscoverDescriptors = 82
+		cmdReadDescriptor = 88
+		cmdWriteDescriptor = 89
+
+		evtStateChanged = 6
+		evtPeripheralDiscovered = 48
+		evtPeripheralConnected = 49
+		evtPeripheralDisconnected = 50
+		evtRSSIRead = 71
+		evtServiceDiscovered = 72
+		evtCharacteristicsDiscovered = 77
+		evtCharacteristicRead = 83
+		evtCharacteristicWritten = 84
+		evtNotificationValueSet = 86
+		evtDescriptorsDiscovered = 87
+		evtDescriptorRead = 90
+		evtDescriptorWritten = 91
+		evtAdvertisingStarted = 27
+		evtAdvertisingStopped = 28
+		evtServiceAdded = 29
+		evtReadRequest = 30
+		evtWriteRequest = 31
+		evtSubscribe = 32
+		evtUnsubscribe = 33
+		evtConfirmation = 34
+		evtATTMTU = 57
+		evtSlaveConnectionComplete = 60  // should be called params update
+		evtMasterConnectionComplete = 59 //not confident
+		evtIncludedServicesDiscovered = 76
+
+		serviceID = "com.apple.blued"
+	} else /* if utsname.Release < "17."*/ {
 		// yosemite
 		cmdAdvertiseStart = 8
 		cmdAdvertiseStop = 9
@@ -117,56 +320,6 @@ func initXpcIDs() error {
 		evtMasterConnectionComplete = 82
 
 		serviceID = "com.apple.blued"
-	} else {
-		// high sierra
-		cmdSendData = 21
-		cmdSubscribed = 22
-		cmdAdvertiseStart = 16
-		cmdAdvertiseStop = 17
-		cmdServicesAdd = 18
-		cmdServicesRemove = 19
-		cmdScanningStart = 44
-		cmdScanningStop = 45
-		cmdConnect = 46
-		cmdDisconnect = 47
-		cmdReadRSSI = 61
-		cmdDiscoverServices = 62
-		cmdDiscoverIncludedServices = 74
-		cmdDiscoverCharacteristics = 75
-		cmdReadCharacteristic = 78
-		cmdWriteCharacteristic = 79
-		cmdSubscribeCharacteristic = 81
-		cmdDiscoverDescriptors = 82
-		cmdReadDescriptor = 88
-		cmdWriteDescriptor = 89
-
-		evtStateChanged = 4
-		evtPeripheralDiscovered = 48
-		evtPeripheralConnected = 49
-		evtPeripheralDisconnected = 50
-		evtRSSIRead = 71
-		evtServiceDiscovered = 72
-		evtCharacteristicsDiscovered = 77
-		evtCharacteristicRead = 83
-		evtCharacteristicWritten = 84
-		evtNotificationValueSet = 86
-		evtDescriptorsDiscovered = 87
-		evtDescriptorRead = 90
-		evtDescriptorWritten = 91
-		evtAdvertisingStarted = 27
-		evtAdvertisingStopped = 28
-		evtServiceAdded = 29
-		evtReadRequest = 30
-		evtWriteRequest = 31
-		evtSubscribe = 32
-		evtUnsubscribe = 33
-		evtConfirmation = 34
-		evtATTMTU = 57
-		evtSlaveConnectionComplete = 60 // should be called params update
-		evtMasterConnectionComplete = 59 //not confident
-		evtIncludedServicesDiscovered = 76
-
-		serviceID = "com.apple.bluetoothd"
 	}
 
 	return nil
